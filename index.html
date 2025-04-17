@@ -54,21 +54,40 @@
     .btn {
       background: #222;
       border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
+      padding: 12px 24px;
+      border-radius: 12px;
       color: white;
       cursor: pointer;
       font-weight: bold;
-      transition: 0.2s;
+      transition: 0.3s ease-in-out;
+      text-transform: uppercase;
     }
 
     .btn:hover {
       background: #333;
+      transform: translateY(-4px);
     }
 
     .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+    }
+
+    .btn:active {
+      transform: translateY(2px);
+    }
+
+    .btn-tiktok {
+      background: #000000;
+      border: 2px solid #25f4ee;
+      color: #25f4ee;
+      font-size: 16px;
+    }
+
+    .btn-tiktok:hover {
+      background: #25f4ee;
+      color: #000000;
+      border-color: #000000;
     }
 
     audio {
@@ -78,48 +97,54 @@
 </head>
 <body>
 
-
 <div id="errorScreen">
   <div style="font-size: 100px;">🥷</div>
   <p>An unknown error occurred</p>
 </div>
 
-  <div id="memeScreen">
-    <img src="image.jpg" class="logo" alt="nfc-ms" />
-    <div class="buttons">
-      <button class="btn" disabled>🔇 Mute</button>
-      <a href="https://www.tiktok.com/@lilxwertyy" target="_blank" class="btn">TikTok</a>
-    </div>
+<div id="memeScreen">
+  <img src="image.jpg" class="logo" alt="nfc-ms" />
+  <div class="buttons">
+    <button id="muteButton" class="btn" disabled>🔇 Mute</button>
+    <a href="https://www.tiktok.com/@lilxwertyy" target="_blank" class="btn btn-tiktok">TikTok</a>
   </div>
+</div>
 
-  <audio id="sound" src="./pump.mp3" loop></audio>
+<audio id="sound" src="./pump.mp3" loop></audio>
 
-  <script>
-    const errorScreen = document.getElementById("errorScreen");
-    const memeScreen = document.getElementById("memeScreen");
-    const sound = document.getElementById("sound");
+<script>
+  const errorScreen = document.getElementById("errorScreen");
+  const memeScreen = document.getElementById("memeScreen");
+  const sound = document.getElementById("sound");
+  const muteButton = document.getElementById("muteButton");
 
-    function isMobile() {
-      return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  function isMobile() {
+    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  }
+
+  document.body.addEventListener("click", () => {
+    errorScreen.style.display = "none";
+    memeScreen.style.display = "flex";
+
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {});
     }
 
-    document.body.addEventListener("click", () => {
+    sound.volume = 1.0;
+    sound.muted = false;
+    sound.play().catch(console.error);
 
-      errorScreen.style.display = "none";
-      memeScreen.style.display = "flex";
+    if (isMobile() && navigator.vibrate) {
+      navigator.vibrate([300, 100, 300, 100, 500]);
+    }
+  }, { once: true });
 
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-
-      sound.volume = 1.0;
-      sound.muted = false;
-      sound.play().catch(console.error);
-
-      if (isMobile() && navigator.vibrate) {
-        navigator.vibrate([300, 100, 300, 100, 500]);
-      }
-    }, { once: true });
-  </script>
+  muteButton.addEventListener("click", () => {
+    // Zmiana tekstu przycisku na Unmute, ale bez faktycznego działania
+    muteButton.textContent = muteButton.textContent === "🔇 Mute" ? "🔊 Unmute" : "🔇 Mute";
+    // Zatrzymanie działania, tak aby efekt wizualny był, ale dźwięk nie był zatrzymany
+    sound.muted = !sound.muted;
+  });
+</script>
 </body>
 </html>
