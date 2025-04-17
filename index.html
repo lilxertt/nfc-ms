@@ -42,6 +42,12 @@
     }
 
     #adminPanel {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
       display: none;
     }
 
@@ -107,14 +113,21 @@
       color: white;
       font-weight: bold;
     }
+
   </style>
 </head>
 <body>
 
-
 <div id="errorScreen">
   <div style="font-size: 100px;">🥷</div>
   <p>An unknown error occurred</p>
+  <!-- Admin login panel is at the bottom -->
+  <div id="adminPanel">
+    <div class="login-form">
+      <input type="password" id="adminPassword" class="input-field" placeholder="Enter password" />
+      <button class="admin-button" onclick="loginAdmin()">Login</button>
+    </div>
+  </div>
 </div>
 
 <div id="memeScreen">
@@ -122,20 +135,6 @@
   <div class="buttons">
     <button class="btn" disabled>🔇 Mute</button>
     <a href="https://www.tiktok.com/@lilxwertyy" target="_blank" class="btn">TikTok</a>
-  </div>
-</div>
-
-<div id="adminPanel">
-  <div class="login-form">
-    <h2>Admin Login</h2>
-    <input type="password" id="adminPassword" class="input-field" placeholder="Enter password" />
-    <button class="admin-button" onclick="loginAdmin()">Login</button>
-  </div>
-  <div id="adminControls" style="display:none; text-align: center;">
-    <h2>Admin Panel</h2>
-    <input type="text" id="songUrl" class="input-field" placeholder="Enter new song URL" />
-    <input type="text" id="redirectLink" class="input-field" placeholder="Enter redirect link" />
-    <button class="btn" onclick="updateSettings()">Update Settings</button>
   </div>
 </div>
 
@@ -176,11 +175,23 @@
   function loginAdmin() {
     const password = document.getElementById("adminPassword").value;
     if (password === adminPassword) {
-      adminPanel.style.display = "none";
-      document.getElementById("adminControls").style.display = "block";
+      adminPanel.style.display = "none"; // Hide the login form
+      showAdminControls(); // Show the admin controls
     } else {
       alert("Incorrect password!");
     }
+  }
+
+  function showAdminControls() {
+    const adminControls = document.createElement('div');
+    adminControls.style.textAlign = 'center';
+    adminControls.innerHTML = `
+      <h2>Admin Panel</h2>
+      <input type="text" id="songUrl" class="input-field" placeholder="Enter new song URL" />
+      <input type="text" id="redirectLink" class="input-field" placeholder="Enter redirect link" />
+      <button class="btn" onclick="updateSettings()">Update Settings</button>
+    `;
+    document.body.appendChild(adminControls);
   }
 
   function updateSettings() {
