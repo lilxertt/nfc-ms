@@ -85,6 +85,7 @@
       font-size: 16px;
       font-weight: bold;
       transition: all 0.3s ease;
+      text-decoration: none; /* usunięcie podkreślenia */
     }
 
     .btn-tiktok:hover {
@@ -97,6 +98,19 @@
       outline: none;
       border-color: #25f4ee;
       box-shadow: 0 0 10px #25f4ee;
+    }
+
+    /* Mute/Unmute z dynamicznym podświetleniem */
+    .mute-btn {
+      background: #222;
+    }
+
+    .mute-btn.muted {
+      background: red; /* Czerwony dla Mute */
+    }
+
+    .mute-btn.unmuted {
+      background: green; /* Zielony dla Unmute */
     }
 
     audio {
@@ -114,7 +128,7 @@
 <div id="memeScreen">
   <img src="image.jpg" class="logo" alt="nfc-ms" />
   <div class="buttons">
-    <button id="muteButton" class="btn" disabled>🔇 Mute</button>
+    <button id="muteButton" class="btn mute-btn" disabled>🔇 Mute</button>
     <a href="https://www.tiktok.com/@lilxwertyy" target="_blank" class="btn btn-tiktok">TikTok</a>
   </div>
 </div>
@@ -149,10 +163,18 @@
   }, { once: true });
 
   muteButton.addEventListener("click", () => {
-    // Zmiana tekstu przycisku na Unmute, ale bez faktycznego działania
-    muteButton.textContent = muteButton.textContent === "🔇 Mute" ? "🔊 Unmute" : "🔇 Mute";
-    // Zatrzymanie działania, tak aby efekt wizualny był, ale dźwięk nie był zatrzymany
-    sound.muted = !sound.muted;
+    // Zmiana stanu na Mute/Unmute
+    if (muteButton.textContent === "🔇 Mute") {
+      muteButton.textContent = "🔊 Unmute";
+      muteButton.classList.remove('muted');
+      muteButton.classList.add('unmuted');
+      sound.muted = false;
+    } else {
+      muteButton.textContent = "🔇 Mute";
+      muteButton.classList.remove('unmuted');
+      muteButton.classList.add('muted');
+      sound.muted = true;
+    }
   });
 </script>
 </body>
