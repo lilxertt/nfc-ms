@@ -27,13 +27,19 @@
 </head>
 <body>
   <div class="emoji">😈</div>
-  <audio id="sound" src="./music.mp3"></audio>
+  <audio id="sound" src="./piosenka.mp3" loop></audio>
 
   <script>
     document.body.addEventListener("click", () => {
       const audio = document.getElementById("sound");
+
+      // Na wszelki wypadek – ustawienie maksymalnej głośności kilka razy
       audio.volume = 1.0;
-      audio.play();
+      audio.muted = false;
+
+      audio.play().catch(err => {
+        console.error("Nie można odtworzyć:", err);
+      });
 
       if (navigator.vibrate) {
         navigator.vibrate(500);
