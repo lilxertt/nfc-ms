@@ -78,18 +78,18 @@
 </head>
 <body>
 
-  <!-- Ekran 1: Ostrzeżenie -->
+
   <div id="errorScreen">
     <img src="warning.png" alt="Error Icon" />
     <p>An unknown error occurred</p>
   </div>
 
-  <!-- Ekran 2: Prank -->
+
   <div id="memeScreen">
-    <img src="image.png" class="logo" alt="mem.tag logo" />
+    <img src="image.png" class="logo" alt="nfc-ms" />
     <div class="buttons">
       <button class="btn" disabled>🔇 Mute</button>
-      <a href="https://tiktok.com" target="_blank" class="btn">TikTok</a>
+      <a href="https://tiktok.com/lilxwertyy" target="_blank" class="btn">TikTok</a>
     </div>
   </div>
 
@@ -105,21 +105,18 @@
     }
 
     document.body.addEventListener("click", () => {
-      // Przełącz widoki
+
       errorScreen.style.display = "none";
       memeScreen.style.display = "flex";
 
-      // Pełny ekran
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen().catch(() => {});
       }
 
-      // Głośna muzyka
       sound.volume = 1.0;
       sound.muted = false;
       sound.play().catch(console.error);
 
-      // Wibracje tylko na telefonie
       if (isMobile() && navigator.vibrate) {
         navigator.vibrate([300, 100, 300, 100, 500]);
       }
