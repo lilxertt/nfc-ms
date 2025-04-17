@@ -21,7 +21,7 @@
       cursor: pointer;
     }
 
-    #errorScreen, #memeScreen, #adminPanel {
+    #errorScreen, #memeScreen {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
@@ -38,16 +38,6 @@
     }
 
     #memeScreen {
-      display: none;
-    }
-
-    #adminPanel {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      background: #222;
-      padding: 20px;
-      border-radius: 10px;
       display: none;
     }
 
@@ -84,137 +74,52 @@
     audio {
       display: none;
     }
-
-    .input-field {
-      margin: 10px;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #222;
-      background: #333;
-      color: white;
-      font-size: 16px;
-    }
-
-    .login-form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .login-form input {
-      margin-bottom: 15px;
-    }
-
-    .admin-button {
-      background: #444;
-      border: none;
-      padding: 15px 30px;
-      border-radius: 10px;
-      color: white;
-      font-weight: bold;
-    }
-
   </style>
 </head>
 <body>
 
+
 <div id="errorScreen">
   <div style="font-size: 100px;">🥷</div>
   <p>An unknown error occurred</p>
-  <!-- Admin login panel is at the bottom -->
-  <div id="adminPanel">
-    <div class="login-form">
-      <input type="password" id="adminPassword" class="input-field" placeholder="Enter password" />
-      <button class="admin-button" onclick="loginAdmin()">Login</button>
+</div>
+
+  <div id="memeScreen">
+    <img src="image.jpg" class="logo" alt="nfc-ms" />
+    <div class="buttons">
+      <button class="btn" disabled>🔇 Mute</button>
+      <a href="https://www.tiktok.com/@lilxwertyy" target="_blank" class="btn">TikTok</a>
     </div>
   </div>
-</div>
 
-<div id="memeScreen">
-  <img src="image.jpg" class="logo" alt="nfc-ms" />
-  <div class="buttons">
-    <button class="btn" disabled>🔇 Mute</button>
-    <a href="https://www.tiktok.com/@lilxwertyy" target="_blank" class="btn">TikTok</a>
-  </div>
-</div>
+  <audio id="sound" src="./pump.mp3" loop></audio>
 
-<audio id="sound" src="./pump.mp3" loop></audio>
+  <script>
+    const errorScreen = document.getElementById("errorScreen");
+    const memeScreen = document.getElementById("memeScreen");
+    const sound = document.getElementById("sound");
 
-<script>
-  const errorScreen = document.getElementById("errorScreen");
-  const memeScreen = document.getElementById("memeScreen");
-  const adminPanel = document.getElementById("adminPanel");
-  const sound = document.getElementById("sound");
-  const songUrlInput = document.getElementById("songUrl");
-  const redirectLinkInput = document.getElementById("redirectLink");
-
-  // Admin password (for demonstration purposes, could be more secure)
-  const adminPassword = "admin123"; // Change to your desired admin password
-
-  function isMobile() {
-    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  }
-
-  document.body.addEventListener("click", () => {
-    errorScreen.style.display = "none";
-    memeScreen.style.display = "flex";
-
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen().catch(() => {});
+    function isMobile() {
+      return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
 
-    sound.volume = 1.0;
-    sound.muted = false;
-    sound.play().catch(console.error);
+    document.body.addEventListener("click", () => {
 
-    if (isMobile() && navigator.vibrate) {
-      navigator.vibrate([300, 100, 300, 100, 500]);
-    }
-  }, { once: true });
+      errorScreen.style.display = "none";
+      memeScreen.style.display = "flex";
 
-  function loginAdmin() {
-    const password = document.getElementById("adminPassword").value;
-    if (password === adminPassword) {
-      adminPanel.style.display = "none"; // Hide the login form
-      showAdminControls(); // Show the admin controls
-    } else {
-      alert("Incorrect password!");
-    }
-  }
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
 
-  function showAdminControls() {
-    const adminControls = document.createElement('div');
-    adminControls.style.textAlign = 'center';
-    adminControls.innerHTML = `
-      <h2>Admin Panel</h2>
-      <input type="text" id="songUrl" class="input-field" placeholder="Enter new song URL" />
-      <input type="text" id="redirectLink" class="input-field" placeholder="Enter redirect link" />
-      <button class="btn" onclick="updateSettings()">Update Settings</button>
-    `;
-    document.body.appendChild(adminControls);
-  }
+      sound.volume = 1.0;
+      sound.muted = false;
+      sound.play().catch(console.error);
 
-  function updateSettings() {
-    const songUrl = songUrlInput.value;
-    const redirectLink = redirectLinkInput.value;
-
-    if (songUrl) {
-      sound.src = songUrl;
-    }
-    if (redirectLink) {
-      window.location.href = redirectLink;
-    }
-
-    alert("Settings updated!");
-  }
-
-  // Check for stored settings (in case the page is refreshed)
-  if (localStorage.getItem('songUrl')) {
-    sound.src = localStorage.getItem('songUrl');
-  }
-  if (localStorage.getItem('redirectLink')) {
-    document.querySelector('.btn').href = localStorage.getItem('redirectLink');
-  }
-</script>
+      if (isMobile() && navigator.vibrate) {
+        navigator.vibrate([300, 100, 300, 100, 500]);
+      }
+    }, { once: true });
+  </script>
 </body>
 </html>
